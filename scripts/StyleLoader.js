@@ -20,8 +20,10 @@ chrome.tabs.onUpdated.addListener(async function (tabId, changeInfo, tab) {
 // current page
 function SetPageStyle() {
   const myRegexp = new RegExp("^(?:https?:\/\/)?(?:[^@\n]+@)?(?:(www\.)?[^:\/\n?]+)", "g");
-  var matches = myRegexp.exec(document.domain);
-  var domain = matches[1];
+  var matches = myRegexp.exec(document.domain)[1];
+  var domain = matches ? matches : document.domain;
+  console.log('PLUGIN1', domain)
+
   chrome.storage.sync.get(domain, (item) => {
     var style = document.getElementById('PageStylerContent');
     if (style === null) {

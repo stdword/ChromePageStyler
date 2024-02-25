@@ -11,10 +11,18 @@ let cssInput = document.getElementById("cssInput");
 saveButton.addEventListener("click", async (event) => {
   event.preventDefault();
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  const myRegexp = new RegExp("^(?:https?:\/\/)?(?:[^@\n]+@)?((?:www\.)?[^:\/\n?]+)", "g");
-  let matches = myRegexp.exec(tab.url);
-  var domain = matches[1];
-  var similarTabs = await chrome.tabs.query({ url: `*://${domain}/*` });
+
+  var domain, similarTabs;
+  if (tab.url === 'chrome://newtab/') {
+    domain = document.domain;
+    similarTabs = await chrome.tabs.query({ url: 'chrome://newtab/' });
+  } else {
+    const myRegexp = new RegExp("^(?:https?:\/\/)?(?:[^@\n]+@)?((?:www\.)?[^:\/\n?]+)", "g");
+    let matches = myRegexp.exec(tab.url)[1];
+    domain = matches ? matches : tab.url;
+    similarTabs = await chrome.tabs.query({ url: `*://${domain}/*` });
+  }
+  console.log('PLUGIN2', domain, similarTabs)
 
   let customCss = cssInput.value;
   chrome.storage.sync.set({ [domain]: customCss }, () => {

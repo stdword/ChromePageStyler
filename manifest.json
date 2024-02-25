@@ -15,7 +15,8 @@
     "content_scripts": [
         {
             "matches": [
-                "<all_urls>"
+                "<all_urls>",
+                "chrome://*/*",
             ],
             "js": [
                 "/scripts/ActiveStyleLoader.js"
@@ -25,7 +26,8 @@
     "description": "A chrome extension to force custom CCS files!",
     "homepage_url": "https://github.com/Eltee-Taiwo/ChromePageStyler",
     "host_permissions": [
-        "<all_urls>"
+        "<all_urls>",
+        "chrome://*/*"
     ],
     "icons": {
         "16": "/images/logo_16.png",
